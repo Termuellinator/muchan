@@ -1,0 +1,16 @@
+Upload to github once i have a name!
+
+
+Webapp similar to 9gag, without the fuzz
+
+Option to upload images
+ability to upvote/downvote images
+one chronological feed, one feed with the most liked images
+
+
+optional:
+
+Assign tags on upload
+Filter feed by tags
+
+
