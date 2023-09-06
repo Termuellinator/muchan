@@ -1,16 +1,17 @@
 from django.shortcuts import render
 
+from .models import Post
 # Create your views here.
 
 def home_page(request):
-    # cnt = Resources.objects.all().count()
-    # user_cnt = User.objects.filter(is_active=True).count()
-    # res_per_cat = Resources.objects.values("cat_id__cat").annotate(cnt=Count("cat_id"))
-    
+    posts = (Post.objects
+            .select_related("user_id", "cat_id")
+            .prefetch_related("tags")
+            .all()
+            .order_by('created_at')[:10])
+
     context = {
-        # "cnt": cnt,
-        # "user_cnt": user_cnt,
-        # "res_per_cat": res_per_cat
+        "posts": posts
     }
     return render(
         request=request, 

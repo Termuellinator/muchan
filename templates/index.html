@@ -7,8 +7,23 @@
         <meta name="description" content="A no fuzz image board">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link rel="stylesheet" href="">
+        <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
     </head>
     <body>
         <h1>Welcome to µ-chan!</h1>
+        <h2>Latest Posts:</h2>
+
+        {% for post in posts %}
+        <p><b>{{post.title}}</b> by {{post.user_id.username}}</p>
+
+        <img src=/{{post.image}} alt="{{post.title}}">
+        
+        <p>Upvotes: {{post.userUpVotes.all|length}} 
+            - Downvotes: {{post.userDownVotes.all|length}}</p>
+        
+        <p>Comments: {{post.comment_set.all|length}}</p>
+        
+        <p>Category: {{post.cat_id.cat}} - Tags: {{post.tags.all|join:", "}}
+        {% endfor %}
     </body>
 </html>
