@@ -16,7 +16,7 @@
         {% for post in posts %}
         <p><b>{{post.title}}</b> by {{post.user_id.username}}</p>
 
-        <img src=/{{post.image}} alt="{{post.title}}">
+        <img src={{post.image.url}} alt="{{post.title}}">
         
         <p>Upvotes: {{post.userUpVotes.all|length}} 
             - Downvotes: {{post.userDownVotes.all|length}}</p>
