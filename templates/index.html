@@ -1,29 +1,26 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <meta charset="utf-8">
-        <meta http-equiv="X-UA-Compatible" content="IE=edge">
-        <title>µ-Chan</title>
-        <meta name="description" content="A no fuzz image board">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
-        <link rel="stylesheet" href="">
-        <meta http-equiv="X-Clacks-Overhead" content="GNU Terry Pratchett" />
-    </head>
-    <body>
-        <h1>Welcome to µ-chan!</h1>
-        <h2>Latest Posts:</h2>
+{% extends 'base.html' %}
 
-        {% for post in posts %}
-        <p><b>{{post.title}}</b> by {{post.user_id.username}}</p>
+{% block content %}
+<h1>Welcome to µ-chan!</h1>
+<h2>Latest Posts:</h2>
 
-        <img src={{post.image.url}} alt="{{post.title}}">
-        
-        <p>Upvotes: {{post.userUpVotes.all|length}} 
-            - Downvotes: {{post.userDownVotes.all|length}}</p>
-        
-        <p>Comments: {{post.comment_set.all|length}}</p>
-        
-        <p>Category: {{post.cat_id.cat}} - Tags: {{post.tags.all|join:", "}}
-        {% endfor %}
-    </body>
-</html>
+{% for post in posts %}
+    <p><b>{{post.title}}</b> by {{post.user_id.username}}</p>
+
+    <img src={{post.image.url}} alt="{{post.title}}" class="center">
+
+    
+    <p>
+    <span class="left">Upvotes: {{post.userUpVotes.all|length}} 
+        - Downvotes: {{post.userDownVotes.all|length}}</span>
+    <span class="right">Category: {{post.cat_id.cat}}</span>        
+    </p><br>
+    
+    <p>
+    <span class="left">Comments: {{post.comment_set.all|length}}</span>
+    <span class="right">Tags: {{post.tags.all|join:", "}}</span>
+    </p><br>
+    
+    <hr>
+{% endfor %}
+{% endblock content %}

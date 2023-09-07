@@ -8,7 +8,7 @@ def home_page(request):
             .select_related("user_id", "cat_id")
             .prefetch_related("tags")
             .all()
-            .order_by('created_at')[:10])
+            .order_by('-created_at')[:10])
 
     context = {
         "posts": posts
