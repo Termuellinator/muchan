@@ -12,3 +12,11 @@
 .left{
     float:left;
 }
+
+.inline{
+    display: inline
+}
+
+.smaller{
+    font-size: 75%;
+}

@@ -4,5 +4,5 @@ from apps.post import views
 
 urlpatterns = [
     path("", views.home_page, name='home'),
-   # path("resource/<int:id>", views.resource_detail, name="resource-detail")
+    path("post/<int:id>", views.post_page, name="post-detail")
 ]
