@@ -1,8 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 
-from .models import Post, Comment
+from .models import Post, Comment, PostTag, Category, Tag
 from apps.user.models import User
-from .form import NewComment
+from .form import NewComment, NewPost
 # Create your views here.
 
 def home_page(request):
@@ -71,4 +71,34 @@ def post_page(request, id):
             request=request, 
             template_name="post/post.html", 
             context=context
+        )
+        
+def new_post(request):
+    if request.method == "GET":
+        form = NewPost()
+        return render(
+            request=request,
+            template_name="post/new_post.html",
+            context={'form': form},
+        )
+    else:
+        form = NewPost(request.POST, request.FILES)
+        print(form)
+        if form.is_valid():
+            data = form.cleaned_data
+            print(data)            
+            created_post = Post.objects.create(
+                user_id = User.objects.get(pk=data['user_id']), 
+                title = data['title'], 
+                image = data.get('image'),
+                cat_id = Category.objects.get(pk=data['cat_id']))
+            created_post.save()
+            for tag in data["tags"]:
+                PostTag.objects.create(post_id=created_post, 
+                                            tag_id=Tag.objects.get(pk=tag))
+            return redirect('post-detail', created_post.id)
+        return render(
+            request=request,
+            template_name="post/new_post.html",
+            context={'form': form},
         )
