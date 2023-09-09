@@ -1,6 +1,8 @@
 from django.shortcuts import render
 
 from .models import Post, Comment
+from apps.user.models import User
+from .form import NewComment
 # Create your views here.
 
 def home_page(request):
@@ -41,8 +43,32 @@ def post_page(request, id):
         "comments": comments
     }
     
-    return render(
-        request=request, 
-        template_name="post/post.html", 
-        context=context
-    )
+    if request.method == "GET":
+        form = NewComment()
+        context["form"] = form
+        return render(
+            request=request, 
+            template_name="post/post.html", 
+            context=context
+        )
+    else:
+        form = NewComment(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            new_comment = Comment.objects.create(
+                user_id = User.objects.get(pk=data['user_id']),
+                post_id = post,
+                body = data["body"]
+            )
+            form = NewComment()
+            context["form"] = form
+            return render(
+                request=request, 
+                template_name="post/post.html", 
+                context=context
+            )
+        return render(
+            request=request, 
+            template_name="post/post.html", 
+            context=context
+        )
