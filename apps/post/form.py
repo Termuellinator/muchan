@@ -5,6 +5,8 @@ from apps.user.models import User
 
 
 class NewComment(forms.Form):
+    """Form to create a new comment.
+    """
     body = forms.CharField(
         widget=forms.Textarea(
             attrs={
@@ -16,6 +18,8 @@ class NewComment(forms.Form):
     
 
 class NewPost(forms.Form):
+    """Form to create a new post.
+    """
     title = forms.CharField(
         widget=forms.TextInput(
             attrs={

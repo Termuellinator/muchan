@@ -6,6 +6,8 @@ from .form import NewComment, NewPost
 # Create your views here.
 
 def home_page(request):
+    """Home Page with the 10 most recent posts displayed
+    """
     posts = (Post.objects
             .select_related("user_id", "cat_id")
             .prefetch_related("tags")
@@ -22,6 +24,13 @@ def home_page(request):
     )
 
 def post_page(request, id):
+    """Display the detailed page of a specific post.
+    
+    Offers the possibility to post a comment for that post.
+
+    Args:
+        id (int): the id of the post to be displayed
+    """
     post = (Post.objects
             .select_related("user_id", "cat_id")
             .prefetch_related("tags")
@@ -74,6 +83,9 @@ def post_page(request, id):
         )
         
 def new_post(request):
+    """Display the page to create a new post.
+    On successful creation, redirects to the detail page for that post.
+    """
     if request.method == "GET":
         form = NewPost()
         return render(

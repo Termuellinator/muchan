@@ -26,6 +26,7 @@ urlpatterns = [
     path("", include("apps.post.urls"))
 ]
 
+# needed to make media/images availabe on the webserver:
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL,
                           document_root=settings.MEDIA_ROOT)

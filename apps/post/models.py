@@ -6,6 +6,8 @@ from apps.core.models import CreatedModifiedDateTimeBase
 # Create your models here.
 
 class Category(CreatedModifiedDateTimeBase):
+    """Model to store the different categories a post can have.
+    """
     cat = models.CharField(max_length=100)
     
     class Meta:
@@ -15,6 +17,8 @@ class Category(CreatedModifiedDateTimeBase):
         return self.cat
     
 class Tag(CreatedModifiedDateTimeBase):
+    """Model to store the different tags a post can have.
+    """
     name = models.CharField(max_length=50)
     
     def __str__(self):
@@ -46,6 +50,8 @@ class Post(CreatedModifiedDateTimeBase):
         return self.title
     
 class PostTag(CreatedModifiedDateTimeBase):
+    """Model to store the many to many relationship of tags to posts
+    """
     modified_at = None
     post_id = models.ForeignKey("post.Post", on_delete=models.CASCADE)
     tag_id = models.ForeignKey("post.Tag", on_delete=models.CASCADE)
@@ -71,6 +77,8 @@ class PostTag(CreatedModifiedDateTimeBase):
     
     
 class Comment(CreatedModifiedDateTimeBase):
+    """Model to store the comments.
+    """
     post_id = models.ForeignKey(
         "post.Post", on_delete=models.CASCADE)
     user_id = models.ForeignKey(

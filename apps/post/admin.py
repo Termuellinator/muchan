@@ -13,16 +13,6 @@ class CustomPost(admin.ModelAdmin):
         'downvotes'
     )
     
-    # fields = (
-    #     'title',
-    #     'username',
-    #     'category'
-    # )
-    
-    # fields = admin.ModelAdmin.fields + (
-    #     ('Extra Fields', {'fields': ('tags')}),
-    # )
-    
     @admin.display(description="Tags")
     def get_tags(self, obj):
         return [tag.name for tag in obj.tags.all()]
