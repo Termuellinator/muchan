@@ -9,6 +9,9 @@ __pycache__/
 # Uploads
 uploads/
 
+# Backups
+db_backup/
+
 # Distribution / packaging
 .Python
 build/
