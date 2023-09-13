@@ -33,6 +33,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "apps.core.middleware.logging.LogRequestAndResponseMiddleware",
     "apps.core.middleware.logging.LogViewExecutionTimeMiddleware",
+    "apps.core.middleware.filter.BlockBrowserByUA",
 ]
 
 ROOT_URLCONF = "config.urls"

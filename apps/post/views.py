@@ -1,8 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from .models import Post, Comment, PostTag, Category, Tag
 from apps.user.models import User
+from .models import Post, Comment, PostTag, Category, Tag
 from .form import NewComment, NewPost
 
 
