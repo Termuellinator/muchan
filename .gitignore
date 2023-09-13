@@ -12,6 +12,9 @@ uploads/
 # Backups
 db_backup/
 
+# Logs
+logs/
+
 # Distribution / packaging
 .Python
 build/
