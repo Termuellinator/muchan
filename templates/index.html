@@ -4,8 +4,20 @@
 
 {% block content %}
 <h1>Welcome to µ-chan!</h1>
+{% if user.is_authenticated %}
+<p>
+    <a href="/user/profile"><h4 cass="inline">{{ user.username }}</a>
+    <a href="/user/logout"> - Logout</h4></a>
+</p>
+{% else %}
+<form method="post" class="container">
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="Submit" />
+</form>
+{% endif %}
 <h2>Latest Posts:</h2>
-
+<hr>
 {% for post in posts %}
     <p>
     <span class="left"><a href="/post/{{post.id}}">

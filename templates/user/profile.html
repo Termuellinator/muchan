@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+
+{% block title %} {{ block.super }} - User Profile {% endblock title %}
+
+{% block content %}
+<h1>Welcome {{ user.username }}! </h1> <!-- user is saved in session and request after authentification -->
+<a href="/"><h4>Back to main page</h4></a>
+<div class="container">
+    <h3>Your recent posts</h3>
+    <hr>
+    {% for post in posts %}
+    <p>
+    <span class="left"><a href="/post/{{post.id}}">
+        <h3 class="inline">{{post.title}}</h3></a></span>
+    </p>
+
+    <img src={{post.image.url}} alt="{{post.title}}" class="center">
+
+    
+    <p>
+    <span class="left">Upvotes: {{post.userUpVotes.all|length}} 
+        - Downvotes: {{post.userDownVotes.all|length}}</span>
+    <span class="right">Category: {{post.cat_id.cat}}</span>        
+    </p><br>
+    
+    <p>
+    <span class="left">Comments: {{post.comment_set.all|length}}</span>
+    <span class="right">Tags: {{post.tags.all|join:", "}}</span>
+    </p><br><br>
+    
+    <hr>
+    {% empty %}
+    <h4>You don't have any posts yet :(</h4>
+    <a href="/post/new_post">Create a new post!</a>
+    {% endfor %}
+</div>
+{% comment %} <div class="viewed-resources">
+    <h3>Recently viewed resources</h3>
+    {% for resource_id, resource_title in request.session.viewed_resources %}
+    <a href= {% url 'resource-detail' id=resource_id %}>{{ resource_title }}</a>
+    {% empty %}
+    <p> No recently viewed resources </p>
+    {% endfor %} {% endcomment %}
+{% endblock content %}
+
+

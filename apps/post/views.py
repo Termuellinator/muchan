@@ -1,5 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth.forms import AuthenticationForm
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 from apps.user.models import User
 from .models import Post, Comment, PostTag, Category, Tag
@@ -20,16 +23,48 @@ class HomePageView(View):
             .all()
             .order_by('-created_at')[:10])
 
+        form = AuthenticationForm()
+        
         context = {
-            "posts": posts
+            "posts": posts,
+            "form": form
         }
         return render(
             request=request, 
             template_name=self.template_name, 
             context=context
         )
+        
+    def post(self, request):
+        form = AuthenticationForm(data=request.POST)
+        if form.is_valid():
+            # extract username and password
+            username = form.cleaned_data.get('username')
+            password = form.cleaned_data.get('password')
+            # authenticate the user
+            user: Optional[User] = authenticate(
+                username = username,
+                password = password)
+            # check if user was successfully authenticated
+            if user is not None:
+                # use the session to keep the authenticated users's id
+                login(request, user)
+                
+                # Redirect the user to his profile page
+                return redirect('profile')
+            else:
+                # TODO: what should happen if the user is not authenticated?
+                pass
+        else:
+            self.error_message = "Sorry, something went wrong. Try again."
+            
+            return render(
+            request=request,
+            template_name=self.template_name,
+            context={'form': form, 'error_message': self.error_message},
+            )
 
-class PostPageView(View):
+class PostPageView(LoginRequiredMixin, View):
     """Display the detailed page of a specific post.
     
     Offers the possibility to post a comment for that post.
@@ -72,7 +107,7 @@ class PostPageView(View):
         if form.is_valid():
             data = form.cleaned_data
             new_comment = Comment.objects.create(
-                user_id = User.objects.get(pk=data['user_id']),
+                user_id = request.user,
                 post_id = Post.objects.get(pk=post_id),
                 body = data["body"]
             )
@@ -84,7 +119,7 @@ class PostPageView(View):
         )
         
 
-class NewPostView(View):
+class NewPostView(LoginRequiredMixin, View):
     """Display the page to create a new post.
     On successful creation, redirects to the detail page for that post.
     """
@@ -103,7 +138,7 @@ class NewPostView(View):
         if form.is_valid():
             data = form.cleaned_data
             created_post = Post.objects.create(
-                user_id=User.objects.get(pk=data['user_id']), 
+                user_id=request.user, 
                 title=data['title'], 
                 image=data.get('image'),
                 cat_id=Category.objects.get(pk=data['cat_id'])

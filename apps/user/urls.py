@@ -3,6 +3,6 @@ from django.urls import path
 from apps.user import views
 
 urlpatterns = [
-    #path("", views.home_page, name='home'),
-    #path("resource/<int:id>", views.resource_detail, name="resource-detail")
+    path("user/profile/", views.UserProfileView.as_view(), name="profile"),
+    path("user/logout/", views.UserLogoutView.as_view(), name="logout"),
 ]

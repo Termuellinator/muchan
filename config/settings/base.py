@@ -99,3 +99,9 @@ MEDIA_URL = '/media/'
 
 # Path where media is stored
 MEDIA_ROOT = BASE_DIR / "media"
+
+# Encrypt Cookies on the client
+SESSION_COOKIE_SECURE = True
+
+# Redirect the user to this url if user is not authenticated
+LOGIN_URL = "login"
