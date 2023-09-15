@@ -104,7 +104,7 @@ MEDIA_ROOT = BASE_DIR / "media"
 SESSION_COOKIE_SECURE = True
 
 # Redirect the user to this url if user is not authenticated
-LOGIN_URL = "login"
+LOGIN_URL = "home"
 
 # Logger configuration
 LOGGING = {

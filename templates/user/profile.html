@@ -4,6 +4,8 @@
 
 {% block content %}
 <h1>Welcome {{ user.username }}! </h1> <!-- user is saved in session and request after authentification -->
+<a href="/user/change_password/"><h4>Change your Password</h4></a>
+<a href="/user/logout"><h4>Logout</h4></a>
 <a href="/"><h4>Back to main page</h4></a>
 <div class="container">
     <h3>Your recent posts</h3>

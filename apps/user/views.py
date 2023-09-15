@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from apps.post.models import Post
@@ -33,5 +34,5 @@ class UserLogoutView(View):
     """Logout current user session and redirect to the home page"""
 
     def get(self, request):
-        request.session.flush()
+        logout(request)
         return redirect("home")
