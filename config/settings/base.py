@@ -129,13 +129,13 @@ LOGGING = {
             "file_req_res": {
                 "level": "INFO",
                 "class": "logging.FileHandler",
-                "filename": str(BASE_DIR / "logs" / "req_res_logs.txt"),
+                "filename": str(BASE_DIR / "logs" / "req_res_logs.log"),
                 "formatter": "verbose",
             },
             "file_perf": {
                 "level": "INFO",
                 "class": "logging.FileHandler",
-                "filename": str(BASE_DIR / "logs" / "view_runtime_logs.txt"),
+                "filename": str(BASE_DIR / "logs" / "view_runtime_logs.log"),
                 "formatter": "perf",
             },
     },
