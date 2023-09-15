@@ -31,9 +31,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "apps.core.middleware.logging.LogRequestAndResponseMiddleware",
-    "apps.core.middleware.logging.LogViewExecutionTimeMiddleware",
+    "apps.core.middleware.log.LogRequestAndResponseMiddleware",
     "apps.core.middleware.filter.BlockBrowserByUA",
+    "apps.core.middleware.view_perf.LogViewExecutionTimeMiddleware",
 ]
 
 ROOT_URLCONF = "config.urls"
@@ -105,3 +105,53 @@ SESSION_COOKIE_SECURE = True
 
 # Redirect the user to this url if user is not authenticated
 LOGIN_URL = "login"
+
+# Logger configuration
+LOGGING = {
+    "version": 1, # dictConfig format version
+    "loggers": {
+        "logging_mw": { # specify the logger instance
+            "handlers": ["file_req_res", "console"],
+            "level": "DEBUG", 
+        },
+        "view_performance": {
+            "handlers": ["file_perf", "console"],
+            "level": "DEBUG",
+        },
+    },
+    "handlers": {
+            "console": {
+                "level": "WARNING", 
+                "class": "logging.StreamHandler", 
+                "formatter": "verbose",
+                "filters": ["dev_only",], # only print to console when DEBUG=True
+            },
+            "file_req_res": {
+                "level": "INFO",
+                "class": "logging.FileHandler",
+                "filename": str(BASE_DIR / "logs" / "req_res_logs.txt"),
+                "formatter": "verbose",
+            },
+            "file_perf": {
+                "level": "INFO",
+                "class": "logging.FileHandler",
+                "filename": str(BASE_DIR / "logs" / "view_runtime_logs.txt"),
+                "formatter": "perf",
+            },
+    },
+    "formatters": {
+        "verbose": { 
+            "format": "[{levelname}] {asctime} :: {module} :: {message}",
+            "style": "{", # define the style used in 'format'
+        },
+        "perf": { 
+            "format": "[{levelname}] {asctime} :: {message}",
+            "style": "{",
+        },
+    },
+    "filters": {
+        "dev_only": { 
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+    },
+}
