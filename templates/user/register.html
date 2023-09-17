@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{block.super}} - Register New User{% endblock title %}
+
+{% block stylesheet %}{{block.super}}
+<link rel='stylesheet' type='text/css' href="{%static 'css/form.css' %}"/>
+{% endblock stylesheet %}
+
+{% block content %}
+<div class='container'>
+<h2>Register a new account</h2>
+<a href="/"><h4>Back to main page</h4></a>
+<div class='register-user-form'>
+    <form method='post'>
+        {% csrf_token %}
+        {{ form }}
+        <input type='submit' value='Submit' />
+    </form>
+</div>
+{% endblock content %}

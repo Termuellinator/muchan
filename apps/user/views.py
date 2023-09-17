@@ -4,6 +4,8 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from apps.post.models import Post
+from .form import RegisterUserForm
+
 # Create your views here.
 
 
@@ -36,3 +38,29 @@ class UserLogoutView(View):
     def get(self, request):
         logout(request)
         return redirect("home")
+
+
+class RegisterUserView(View):
+    """Register a new user"""
+    
+    template_name = "user/register.html"
+    
+    def get(self, request):
+        form = RegisterUserForm()
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={'form': form},
+        )
+        
+    def post(self, request):
+        form = RegisterUserForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('home')
+        else:
+            return render(
+                request=request,
+                template_name=self.template_name,
+                context={'form': form},
+            )

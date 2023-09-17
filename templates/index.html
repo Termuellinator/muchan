@@ -6,7 +6,7 @@
 <h1>Welcome to µ-chan!</h1>
 {% if user.is_authenticated %}
 <p>
-    <a href="/user/profile"><h4 cass="inline">{{ user.username }}</a>
+    <a href="/user/profile"><h4 class="inline">{{ user.username }}</a>
     <a href="/user/logout"> - Logout</h4></a>
 </p>
 {% else %}
@@ -15,6 +15,7 @@
     {{ form }}
     <input type="submit" value="Submit" />
 </form>
+<a href="/user/register"><h4>Register new account</h4></a>
 {% endif %}
 <h2>Latest Posts:</h2>
 <hr>
