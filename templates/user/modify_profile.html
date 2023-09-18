@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}{{block.super}} - Change your details{% endblock title %}
+
+{% block stylesheet %}{{block.super}}
+<link rel='stylesheet' type='text/css' href="{%static 'css/form.css' %}"/>
+{% endblock stylesheet %}
+
+{% block content %}
+<div class='container'>
+<h2>Change your details</h2>
+<a href="/"><h4>Back to main page</h4></a>
+<div class='modify-user-form'>
+    <form method='post'>
+        {% csrf_token %}
+        {{ form }}
+        <input type='submit' value='Submit' />
+    </form>
+</div>
+{% endblock content %}

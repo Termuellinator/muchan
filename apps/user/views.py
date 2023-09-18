@@ -4,7 +4,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
 from apps.post.models import Post
-from .form import RegisterUserForm
+from .form import RegisterUserForm, ModifyUserForm
 
 # Create your views here.
 
@@ -41,7 +41,7 @@ class UserLogoutView(View):
 
 
 class RegisterUserView(View):
-    """Register a new user"""
+    """Register a new user and redirect to the home page"""
     
     template_name = "user/register.html"
     
@@ -58,6 +58,32 @@ class RegisterUserView(View):
         if form.is_valid():
             form.save()
             return redirect('home')
+        else:
+            return render(
+                request=request,
+                template_name=self.template_name,
+                context={'form': form},
+            )
+            
+
+class ModifyUserView(View):
+    """Modify user details and redirect to the user profile"""
+    
+    template_name = "user/modify_profile.html"
+    
+    def get(self, request):
+        form = ModifyUserForm(instance=request.user)
+        return render(
+            request=request,
+            template_name=self.template_name,
+            context={'form': form},
+        )
+        
+    def post(self, request):
+        form = ModifyUserForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect('profile')
         else:
             return render(
                 request=request,
