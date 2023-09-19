@@ -29,3 +29,7 @@ dev-shell:
 
 backup:
 	pg_dump -U $(DB_USER) -d $(DB_NAME) -f $(DB_BACK_UP_DIR)/DB_backup_$$(date +"%Y-%m-%-d-%H-%M-%S").sql
+
+v = 1
+dev-test:
+	python manage.py test -v $(v) --settings=config.settings.dev
