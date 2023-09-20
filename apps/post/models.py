@@ -59,16 +59,17 @@ class PostTag(CreatedModifiedDateTimeBase):
     class Meta:
         constraints = [
             models.UniqueConstraint(
-                "post_id",
-                "tag_id",
+                fields = ["post_id", "tag_id"],
                 name = "post_tag_unique",
                 violation_error_message="Tag already exist for post",
             )
         ]
     
+    @property
     def title(self):
         return self.post_id.title
     
+    @property
     def tag(self):
         return self.tag_id.name
         

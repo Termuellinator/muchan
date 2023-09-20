@@ -32,4 +32,4 @@ backup:
 
 v = 1
 dev-test:
-	python manage.py test -v $(v) --settings=config.settings.dev
+	python manage.py test $(module) -v $(v) --settings=config.settings.dev
