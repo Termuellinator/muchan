@@ -13,7 +13,7 @@ uploads/
 db_backup/
 
 # Logs
-logs/
+logs/*.log
 
 # Distribution / packaging
 .Python
