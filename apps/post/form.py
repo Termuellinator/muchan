@@ -24,13 +24,14 @@ class NewPost(forms.Form):
             attrs={"class": "title-input", "placeholder": "Enter a Title"}
         )
     )
-
     image = forms.ImageField(label="Image")
+    cat_id = forms.IntegerField(widget=forms.Select(), label="Category")
+    tags = forms.MultipleChoiceField(label="Tags")
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields["cat_id"].widget.choices = (
+            [(cat.id, cat.cat) for cat in Category.objects.all()])
+        self.fields["tags"].choices = (
+            [[tag.id, tag.name] for tag in Tag.objects.all()])
 
-    categories = [(cat.id, cat.cat) for cat in Category.objects.all()]
-    cat_id = forms.IntegerField(
-        widget=forms.Select(choices=categories), label="Category"
-    )
-
-    tags_list = [[tag.id, tag.name] for tag in Tag.objects.all()]
-    tags = forms.MultipleChoiceField(choices=tags_list, label="Tags")
