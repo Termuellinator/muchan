@@ -8,6 +8,11 @@ on:
     branches: [ "dev" ]
   pull_request:
     branches: [ "dev" ]
+    types:
+      - opened # run workflow only when .py files are modified
+    paths:
+      - "**.py"
+
 
 jobs:
   build:
