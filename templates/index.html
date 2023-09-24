@@ -9,6 +9,9 @@
     <a href="/user/profile"><h4 class="inline">{{ user.username }}</a>
     <a href="/user/logout"> - Logout</h4></a>
 </p>
+<p>
+    <a href="/post/new_post"><h3>Create a new post.</h3></a>
+</p>
 {% else %}
 <form method="post" class="container">
     {% csrf_token %}
