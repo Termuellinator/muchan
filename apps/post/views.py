@@ -1,6 +1,7 @@
 from typing import Optional
 from django.shortcuts import render, redirect
 from django.views import View
+from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -13,22 +14,31 @@ from .form import NewComment, NewPost
 # Create your views here.
 
 class HomePageView(View):
-    """Home Page with the 10 most recent posts displayed
+    """Home Page with some number of posts displayed
+
+    Args:
+        page(int): The page to display - Default 0
+        posts_per_page(int): How many posts are displayed per page - Default 3
     """
     template_name = "index.html"
     
-    def get(self, request):
+    def get(self, request, page:int = 1, posts_per_page:int = 5):
         posts = (Post.objects
             .select_related("user_id", "cat_id")
             .prefetch_related("tags")
             .all()
-            .order_by('-created_at')[:10])
+            .order_by('-created_at'))
+        
+        paginator = Paginator(posts, posts_per_page)
+        paginated_posts = paginator.page(page)
+
+        request.session["last_page"] = page
 
         form = AuthenticationForm()
         
         context = {
-            "posts": posts,
-            "form": form
+            "form": form,
+            "paginated_posts": paginated_posts,
         }
         return render(
             request=request, 

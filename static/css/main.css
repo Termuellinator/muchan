@@ -26,3 +26,7 @@ body {
 .smaller{
     font-size: 75%;
 }
+
+#pagination li {
+    display: inline;
+}
