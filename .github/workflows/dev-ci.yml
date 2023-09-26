@@ -5,7 +5,7 @@ name: Django Tests
 
 on:
   push:
-    branches: [ "dev" ]
+    branches: [ "*" ]
   pull_request:
     branches: [ "dev" ]
     types:
