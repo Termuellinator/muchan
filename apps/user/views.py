@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.views import View
+from django.core.paginator import Paginator
 from django.contrib.auth import logout
 from django.contrib.auth.mixins import LoginRequiredMixin
 
@@ -20,10 +21,16 @@ class UserProfileView(LoginRequiredMixin, View):
             .prefetch_related("tags")
             .all()
             .filter(user_id = request.user.id)
-            .order_by('-created_at')[:10])
+            .order_by('-created_at'))
+        
+        page = request.GET.get("page", 1)
+        posts_per_page = request.session.get("posts_per_page", 5)
+        
+        paginator = Paginator(posts, posts_per_page)
+        paginated_posts = paginator.page(page)
         
         context = {
-            "posts": posts,
+            "paginated_posts": paginated_posts,
         }
         return render(
             request=request,
