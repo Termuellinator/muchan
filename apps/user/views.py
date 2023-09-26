@@ -11,7 +11,12 @@ from .form import RegisterUserForm, ModifyUserForm
 
 
 class UserProfileView(LoginRequiredMixin, View):
-    """Show the users profile page if they are logged in."""
+    """Show the users profile page if they are logged in.
+    
+    GET-Parameters:
+        page(int): The page of posts to display - Default 1
+        posts_per_page(int): How many posts are displayed per page - Default 5
+    """
 
     template_name = "user/profile.html"
 
@@ -22,13 +27,13 @@ class UserProfileView(LoginRequiredMixin, View):
             .all()
             .filter(user_id = request.user.id)
             .order_by('-created_at'))
-        
+
         page = request.GET.get("page", 1)
         posts_per_page = request.session.get("posts_per_page", 5)
-        
+
         paginator = Paginator(posts, posts_per_page)
         paginated_posts = paginator.page(page)
-        
+
         context = {
             "paginated_posts": paginated_posts,
         }
@@ -49,9 +54,9 @@ class UserLogoutView(View):
 
 class RegisterUserView(View):
     """Register a new user and redirect to the home page"""
-    
+
     template_name = "user/register.html"
-    
+
     def get(self, request):
         form = RegisterUserForm()
         return render(
@@ -59,7 +64,7 @@ class RegisterUserView(View):
             template_name=self.template_name,
             context={'form': form},
         )
-        
+
     def post(self, request):
         form = RegisterUserForm(request.POST)
         if form.is_valid():
@@ -71,13 +76,13 @@ class RegisterUserView(View):
                 template_name=self.template_name,
                 context={'form': form},
             )
-            
+
 
 class ModifyUserView(View):
     """Modify user details and redirect to the user profile"""
-    
+
     template_name = "user/modify_profile.html"
-    
+
     def get(self, request):
         form = ModifyUserForm(instance=request.user)
         return render(
@@ -85,7 +90,7 @@ class ModifyUserView(View):
             template_name=self.template_name,
             context={'form': form},
         )
-        
+
     def post(self, request):
         form = ModifyUserForm(request.POST, instance=request.user)
         if form.is_valid():

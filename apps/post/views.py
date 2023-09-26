@@ -17,7 +17,7 @@ class HomePageView(View):
     """Home Page with some number of posts displayed
 
     GET-Parameters:
-        page(int): The page to display - Default 0
+        page(int): The page to display - Default 1
         posts_per_page(int): How many posts are displayed per page - Default 5
     """
     template_name = "index.html"
@@ -111,8 +111,8 @@ class PostPageView(LoginRequiredMixin, View):
         form = NewComment()
         self.context["form"] = form
         return render(
-            request=request, 
-            template_name=self.template_name, 
+            request=request,
+            template_name=self.template_name,
             context=self.context
         )
         
@@ -128,7 +128,7 @@ class PostPageView(LoginRequiredMixin, View):
             return redirect('post-detail', post_id)
         return render(
             request=request, 
-            template_name=self.template_name, 
+            template_name=self.template_name,
             context=self.context
         )
         
@@ -152,15 +152,15 @@ class NewPostView(LoginRequiredMixin, View):
         if form.is_valid():
             data = form.cleaned_data
             created_post = Post.objects.create(
-                user_id=request.user, 
-                title=data['title'], 
+                user_id=request.user,
+                title=data['title'],
                 image=data.get('image'),
                 cat_id=Category.objects.get(pk=data['cat_id'])
             )
             created_post.save()
             for tag in data["tags"]:
                 PostTag.objects.create(
-                    post_id=created_post, 
+                    post_id=created_post,
                     tag_id=Tag.objects.get(pk=tag)
                 )
             return redirect('post-detail', created_post.id)
