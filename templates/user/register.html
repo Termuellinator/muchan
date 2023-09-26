@@ -9,7 +9,7 @@
 {% block content %}
 <div class='container'>
 <h2>Register a new account</h2>
-<a href="/"><h4>Back to main page</h4></a>
+<a href="/?page={{ request.session.last_page }}"><h4>Go Back</h4></a>
 <div class='register-user-form'>
     <form method='post'>
         {% csrf_token %}

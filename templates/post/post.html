@@ -11,7 +11,7 @@
 <div class='container post'><p>
 <span class="left"><h3 class="inline">{{title}}</h3></span>
 <span class="right">by: {{username}}</span>
-<a href="/"><h4>Back to main page</h4></a>
+<a href="/?page={{ request.session.last_page }}"><h4>Go Back</h4></a>
 </p><hr>
 <img src={{image}} alt="{{title}}" class="center">
 

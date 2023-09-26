@@ -50,9 +50,9 @@
 {% if paginated_posts.has_other_pages %}
   <ul id="pagination">
     {% if paginated_posts.has_previous %}
-      <li><a href="/page/1">
+      <li><a href="?page=1">
         &laquo;&laquo;</a></li>&nbsp;
-      <li><a href="/page/{{ paginated_posts.previous_page_number }}">
+      <li><a href="?page={{ paginated_posts.previous_page_number }}">
         &laquo;</a></li>
     {% else %}
       <li class="disabled"><span>&laquo;</span></li>
@@ -61,13 +61,13 @@
       {% if paginated_posts.number == i %}
         <li class="active"><span>{{ i }}</span></li>
       {% else %}
-        <li><a href="/page/{{ i }}">{{ i }}</a></li>
+        <li><a href="?page={{ i }}">{{ i }}</a></li>
       {% endif %}
     {% endfor %}
     {% if paginated_posts.has_next %}
-      <li><a href="/page/{{ paginated_posts.next_page_number }}">
+      <li><a href="?page={{ paginated_posts.next_page_number }}">
         &raquo;</a></li>&nbsp;
-      <li><a href="/page/{{ paginated_posts.paginator.num_pages }}">
+      <li><a href="?page={{ paginated_posts.paginator.num_pages }}">
         &raquo;&raquo;</a></li>
     {% else %}
       <li class="disabled"><span>&raquo;</span></li>

@@ -9,7 +9,7 @@
 {% block content %}
 <div class='container'>
 <h2>Create a new post</h2>
-<a href="/"><h4>Back to main page</h4></a>
+<a href="/?page={{ request.session.last_page }}"><h4>Go Back</h4></a>
 <div class='new-post-form'>
     <form enctype="multipart/form-data" method='post' action=''>
         {% csrf_token %}

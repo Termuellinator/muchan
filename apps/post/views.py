@@ -16,18 +16,21 @@ from .form import NewComment, NewPost
 class HomePageView(View):
     """Home Page with some number of posts displayed
 
-    Args:
+    GET-Parameters:
         page(int): The page to display - Default 0
-        posts_per_page(int): How many posts are displayed per page - Default 3
+        posts_per_page(int): How many posts are displayed per page - Default 5
     """
     template_name = "index.html"
     
-    def get(self, request, page:int = 1, posts_per_page:int = 5):
+    def get(self, request):
         posts = (Post.objects
             .select_related("user_id", "cat_id")
             .prefetch_related("tags")
             .all()
             .order_by('-created_at'))
+        
+        page = request.GET.get("page", 1)
+        posts_per_page = request.session.get("posts_per_page", 5)
         
         paginator = Paginator(posts, posts_per_page)
         paginated_posts = paginator.page(page)
