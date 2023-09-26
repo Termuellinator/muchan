@@ -23,9 +23,9 @@ jobs:
       matrix:
         python-version: ["3.11"]
 
-    environment:
-      name: dev-test
-      url: https://github.com/Termuellinator/muchan
+    # environment:
+    #   name: dev-test
+    #   url: https://github.com/Termuellinator/muchan
 
     env:
       DB_HOST: ${{ vars.DB_HOST }}
