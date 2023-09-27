@@ -44,7 +44,7 @@ class TestPostPageView(TestCase):
                               HTTP_CONTENT_TYPE="text/xml")
 
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response.url, "/?next=/post/1")
+        self.assertEqual(response.url, f"/?next=/post/{self.post.id}")
 
     def test_returns_200_if_authed(self):
         self.client.login(username="test", password="test")
