@@ -37,7 +37,15 @@
         - Downvotes: {{post.userDownVotes.all|length}}</span>
     <span class="right">Category: {{post.cat_id.cat}}</span>        
     </p><br>
-    
+    <p>
+    <span class="left">
+      <a href="/post/upvote/{{post.id}}?next={{ request.get_full_path }}">
+        Upvote</a> 
+          -
+      <a href="/post/downvote/{{post.id}}?next={{ request.get_full_path }}">
+        Downvote</span>
+      </a>
+    </p><br>
     <p>
     <span class="left">Comments: {{post.comment_set.all|length}}</span>
     <span class="right">Tags: {{post.tags.all|join:", "}}</span>

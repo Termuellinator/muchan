@@ -87,7 +87,6 @@ class PostPageView(LoginRequiredMixin, View):
     template_name = "post/post.html"
 
     def get(self, request, post_id):
-
         self.post_data = (Post.objects
                 .select_related("user_id", "cat_id")
                 .prefetch_related("tags")
@@ -169,3 +168,43 @@ class NewPostView(LoginRequiredMixin, View):
             template_name=self.template_name,
             context={'form': form},
         )
+
+
+class UpVotePostView(LoginRequiredMixin, View):
+    """Upvote a post for the currently logged in user
+    """
+    def get(self, request, post_id):
+        self.post = Post.objects.get(pk=post_id)
+        self.post.userUpVotes.add(request.user)
+
+        return redirect(request.GET.get("next","home"))
+
+
+class DownVotePostView(LoginRequiredMixin, View):
+    """Downvote a post for the currently logged in user
+    """
+    def get(self, request, post_id):
+        self.post = Post.objects.get(pk=post_id)
+        self.post.userDownVotes.add(request.user)
+
+        return redirect(request.GET.get("next","home"))
+
+
+class UpVoteCommentView(LoginRequiredMixin, View):
+    """Upvote a comment for the currently logged in user
+    """
+    def get(self, request, comment_id):
+        self.comment = Comment.objects.get(pk=comment_id)
+        self.comment.userUpVotes.add(request.user)
+
+        return redirect(request.GET.get("next","home"))
+
+
+class DownVoteCommentView(LoginRequiredMixin, View):
+    """Downvote a comment for the currently logged in user
+    """
+    def get(self, request, comment_id):
+        self.comment = Comment.objects.get(pk=comment_id)
+        self.comment.userDownVotes.add(request.user)
+
+        return redirect(request.GET.get("next","home"))

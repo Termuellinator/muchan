@@ -32,7 +32,16 @@
     <h5>{{comment.user_id.username}}</h5>
     <span class="left">{{comment.body}}</span><br><br>
     <span class="smaller">Upvotes: {{comment.userUpVotes.all|length}} - Downvotes: {{comment.userDownVotes.all|length}}</span>
-</p><br><hr>
+</p><br>
+<p>
+    <span class="left">
+      <a href="/comment/upvote/{{comment.id}}?next={{ request.get_full_path }}">
+        Upvote</a> 
+          -
+      <a href="/comment/downvote/{{comment.id}}?next={{ request.get_full_path }}">
+        Downvote</span>
+      </a>
+    </p><br><hr>
 {% endfor %}
 </div>
 <div class="container new-comment-form">

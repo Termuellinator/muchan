@@ -5,5 +5,13 @@ from apps.post import views
 urlpatterns = [
     path("", views.HomePageView.as_view(), name='home'),
     path("post/<int:post_id>", views.PostPageView.as_view(), name="post-detail"),
-    path("post/new_post", views.NewPostView.as_view(), name="new-post")
+    path("post/new_post", views.NewPostView.as_view(), name="new-post"),
+    path("post/upvote/<int:post_id>", views.UpVotePostView.as_view(),
+         name="post-upvote"),
+    path("post/downvote/<int:post_id>", views.DownVotePostView.as_view(),
+         name="post-downvote"),
+    path("comment/upvote/<int:comment_id>", views.UpVoteCommentView.as_view(),
+         name="comment-upvote"),
+    path("comment/downvote/<int:comment_id>", views.DownVoteCommentView.as_view(),
+         name="comment-downvote"),
 ]
