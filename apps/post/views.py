@@ -176,6 +176,7 @@ class UpVotePostView(LoginRequiredMixin, View):
     def get(self, request, post_id):
         self.post = Post.objects.get(pk=post_id)
         self.post.userUpVotes.add(request.user)
+        self.post.userDownVotes.remove(request.user)
 
         return redirect(request.GET.get("next","home"))
 
@@ -186,6 +187,7 @@ class DownVotePostView(LoginRequiredMixin, View):
     def get(self, request, post_id):
         self.post = Post.objects.get(pk=post_id)
         self.post.userDownVotes.add(request.user)
+        self.post.userUpVotes.remove(request.user)
 
         return redirect(request.GET.get("next","home"))
 
@@ -196,6 +198,7 @@ class UpVoteCommentView(LoginRequiredMixin, View):
     def get(self, request, comment_id):
         self.comment = Comment.objects.get(pk=comment_id)
         self.comment.userUpVotes.add(request.user)
+        self.comment.userDownVotes.remove(request.user)
 
         return redirect(request.GET.get("next","home"))
 
@@ -206,5 +209,6 @@ class DownVoteCommentView(LoginRequiredMixin, View):
     def get(self, request, comment_id):
         self.comment = Comment.objects.get(pk=comment_id)
         self.comment.userDownVotes.add(request.user)
+        self.comment.userUpVotes.remove(request.user)
 
         return redirect(request.GET.get("next","home"))
