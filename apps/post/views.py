@@ -5,6 +5,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count, F
 
 from apps.user.models import User
 from .models import Post, Comment, PostTag, Category, Tag
@@ -19,16 +20,28 @@ class HomePageView(View):
     GET-Parameters:
         page(int): The page to display - Default 1
         posts_per_page(int): How many posts are displayed per page - Default 5
+        sort('new'|'hot'): Sort the posts by newst or best rated - default 'new' 
     """
     template_name = "index.html"
     
     def get(self, request):
-        posts = (Post.objects
-            .select_related("user_id", "cat_id")
-            .prefetch_related("tags")
-            .all()
-            .order_by('-created_at'))
+        sort = request.GET.get("sort", "new")
         
+        if sort == "new":
+            posts = (Post.objects
+                .select_related("user_id", "cat_id")
+                .prefetch_related("tags")
+                .all()
+                .order_by('-created_at'))
+        elif sort == "hot":
+            posts = (Post.objects
+                .select_related("user_id", "cat_id")
+                .prefetch_related("tags")
+                .annotate(rating=Count('userUpVotes', distinct=True) -
+                          Count('userDownVotes', distinct=True),
+                          upvotes=Count('userUpVotes'))
+                .order_by('-rating', '-upvotes'))
+
         page = request.GET.get("page", 1)
         posts_per_page = request.session.get("posts_per_page", 5)
         
