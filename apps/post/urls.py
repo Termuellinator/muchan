@@ -1,6 +1,11 @@
 from django.urls import path
+from rest_framework import routers
 
-from apps.post import views
+from apps.post import views, api_views
+
+
+router = routers.SimpleRouter()
+router.register("api/v1/post", api_views.PostViewSet)
 
 urlpatterns = [
     path("", views.HomePageView.as_view(), name='home'),
@@ -14,4 +19,5 @@ urlpatterns = [
          name="comment-upvote"),
     path("comment/downvote/<int:comment_id>", views.DownVoteCommentView.as_view(),
          name="comment-downvote"),
+    *router.urls,
 ]
