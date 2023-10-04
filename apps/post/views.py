@@ -5,7 +5,7 @@ from django.core.paginator import Paginator
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.db.models import Count, F
+from django.db.models import Count
 
 from apps.user.models import User
 from .models import Post, Comment, PostTag, Category, Tag
