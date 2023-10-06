@@ -15,8 +15,10 @@ class PostViewSet(viewsets.ModelViewSet):
     serializer_class = serializers.PostModelSerializer
 
 
-class CategoryViewSet(mixins.DenyDeletionOfDefaultCategoryMixin, 
+class CategoryViewSet(mixins.DenyDeletionOfDefaultCategoryMixin,
                       viewsets.ModelViewSet):
+    permission_classes = (
+        permissions.IsAuthenticatedCreateOrSuperDeleteOrReadOnly,)
     queryset = (models.Category.objects.all())
 
     serializer_class = serializers.CategoryModelSerializer

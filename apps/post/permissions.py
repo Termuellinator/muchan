@@ -18,3 +18,20 @@ class AuthorSuperOrReadOnly(permissions.BasePermission):
             return True
         
         return False
+
+
+class IsAuthenticatedCreateOrSuperDeleteOrReadOnly(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.method in permissions.SAFE_METHODS:
+            return True
+        
+        if request.user.is_authenticated:
+            if request.user.is_superuser:
+                return True
+
+            if request.method == "DELETE":
+                return False
+            
+            return True
+        
+        return False
