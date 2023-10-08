@@ -30,3 +30,10 @@ class TagViewSet(viewsets.ModelViewSet):
     queryset = (models.Tag.objects.all())
 
     serializer_class = serializers.TagModelSerializer
+
+
+class CommentViewSet(viewsets.ModelViewSet):
+    permission_classes = (permissions.AuthorSuperOrReadOnly,)
+    queryset = (models.Comment.objects.all())
+
+    serializer_class = serializers.CommentModelSerializer

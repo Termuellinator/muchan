@@ -16,12 +16,32 @@ class TagModelSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class CommentModelSerializer(serializers.ModelSerializer):
+    user_id = UserModelSerializer()
+    userUpVotes = UserModelShortSerializer(many=True)
+    userDownVotes = UserModelShortSerializer(many=True)
+    
+    class Meta:
+        model = models.Comment
+        fields = (
+            "id",
+            "body",
+            "post_id",
+            "user_id",
+            "userUpVotes",
+            "userDownVotes",
+            "created_at",
+            "modified_at",
+        )
+
+
 class PostModelSerializer(serializers.ModelSerializer):
     cat_id = CategoryModelSerializer()
     tags = TagModelSerializer(many=True)
     user_id = UserModelSerializer()
     userUpVotes = UserModelShortSerializer(many=True)
     userDownVotes = UserModelShortSerializer(many=True)
+    comments = CommentModelSerializer(source="comment_set", many=True)
 
     class Meta:
         model = models.Post
@@ -33,6 +53,7 @@ class PostModelSerializer(serializers.ModelSerializer):
             "user_id",
             "cat_id",
             "tags",
+            "comments",
             "userUpVotes",
             "userDownVotes",
             "created_at",
