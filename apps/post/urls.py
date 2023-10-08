@@ -7,6 +7,7 @@ from apps.post import views, api_views
 router = routers.SimpleRouter()
 router.register("api/v1/post", api_views.PostViewSet)
 router.register("api/v1/category", api_views.CategoryViewSet)
+router.register("api/v1/tags", api_views.TagViewSet)
 
 
 urlpatterns = [

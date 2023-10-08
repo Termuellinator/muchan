@@ -22,3 +22,11 @@ class CategoryViewSet(mixins.DenyDeletionOfDefaultCategoryMixin,
     queryset = (models.Category.objects.all())
 
     serializer_class = serializers.CategoryModelSerializer
+
+
+class TagViewSet(viewsets.ModelViewSet):
+    permission_classes = (
+        permissions.IsAuthenticatedCreateOrSuperDeleteOrReadOnly,)
+    queryset = (models.Tag.objects.all())
+
+    serializer_class = serializers.TagModelSerializer
