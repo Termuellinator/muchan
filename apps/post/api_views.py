@@ -3,18 +3,28 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.pagination import PageNumberPagination
 
 from apps.post import models, serializers, mixins, permissions
 
 
+
+class StandardPostPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+
 class PostViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AuthorSuperOrReadOnly,)
+    pagination_class = StandardPostPagination
 
     queryset = (
         models.Post.objects
         .select_related("user_id", "cat_id")
         .prefetch_related("tags")
-        .all())
+        .all()
+        .order_by('-created_at'))
 
     serializer_class = serializers.PostModelSerializer
 
