@@ -23,7 +23,7 @@ api_urlpatterns = [
     ),
     path(
         "api/v1/upvote-comment/<int:comment_id>",
-        views.UpVoteCommentView.as_view(),
+        api_views.UpVoteCommentView.as_view(),
         name="upvote-comment",
     ),
     path(
