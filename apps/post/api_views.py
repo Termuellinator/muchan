@@ -1,3 +1,4 @@
+from django.db.models import Count
 from rest_framework import viewsets
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -16,6 +17,9 @@ class StandardPostPagination(PageNumberPagination):
 
 
 class PostViewSet(viewsets.ModelViewSet):
+    """Viewset for posts. List is sorted by creation date by default (?sort=new).
+    Query parameter 'sort' can be set to 'hot' to sort by upvotes
+    """ 
     permission_classes = (permissions.AuthorSuperOrReadOnly,)
     pagination_class = StandardPostPagination
 
@@ -23,10 +27,30 @@ class PostViewSet(viewsets.ModelViewSet):
         models.Post.objects
         .select_related("user_id", "cat_id")
         .prefetch_related("tags")
-        .all()
-        .order_by('-created_at'))
+        .all())
 
     serializer_class = serializers.PostModelSerializer
+
+    def list(self, request, *args, **kwargs):
+        """Overwrite list method to have different sorting depending on
+        the queryparameter 'sort'
+        """
+        sort = self.request.GET.get("sort", "new")
+        if sort == "new":
+            self.queryset = (models.Post.objects
+                .select_related("user_id", "cat_id")
+                .prefetch_related("tags")
+                .all()
+                .order_by('-created_at'))
+        elif sort == "hot":
+            self.queryset = (models.Post.objects
+                .select_related("user_id", "cat_id")
+                .prefetch_related("tags")
+                .annotate(rating=Count('userUpVotes', distinct=True) -
+                            Count('userDownVotes', distinct=True),
+                            upvotes=Count('userUpVotes'))
+                .order_by('-rating', '-upvotes'))
+        return super().list(self, request, *args, **kwargs)
 
 
 class CategoryViewSet(mixins.DenyDeletionOfDefaultCategoryMixin,
