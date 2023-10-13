@@ -8,7 +8,7 @@ from apps.core.models import CreatedModifiedDateTimeBase
 class Category(CreatedModifiedDateTimeBase):
     """Model to store the different categories a post can have.
     """
-    cat = models.CharField(max_length=100)
+    cat = models.CharField(max_length=100, unique=True)
     
     class Meta:
         verbose_name_plural = "Categories"
@@ -19,7 +19,7 @@ class Category(CreatedModifiedDateTimeBase):
 class Tag(CreatedModifiedDateTimeBase):
     """Model to store the different tags a post can have.
     """
-    name = models.CharField(max_length=50)
+    name = models.CharField(max_length=50, unique=True)
     
     def __str__(self):
         return self.name
