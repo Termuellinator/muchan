@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
 from apps.user.serializers import UserModelSerializer, UserModelShortSerializer
-from . import models
+from . import models, validators
 
 
 class CategoryModelSerializer(serializers.ModelSerializer):
@@ -11,6 +11,13 @@ class CategoryModelSerializer(serializers.ModelSerializer):
 
 
 class TagModelSerializer(serializers.ModelSerializer):
+    name = serializers.CharField(validators=[
+        validators.ValidateFuzzyUnique(
+            queryset=models.Tag.objects.all(),
+            target_field="name",
+            source="serializer"          
+        )
+    ])
     class Meta:
         model = models.Tag
         fields = "__all__"
