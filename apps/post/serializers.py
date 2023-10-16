@@ -5,6 +5,13 @@ from . import models, validators
 
 
 class CategoryModelSerializer(serializers.ModelSerializer):
+    cat = serializers.CharField(validators=[
+        validators.ValidateFuzzyUnique(
+            queryset=models.Category.objects.all(),
+            target_field="cat",
+            source="serializer"          
+        )
+    ])
     class Meta:
         model = models.Category
         fields = "__all__"
