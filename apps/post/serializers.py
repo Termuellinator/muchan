@@ -55,7 +55,6 @@ class PostModelSerializer(serializers.ModelSerializer):
     user_id = UserModelSerializer()
     userUpVotes = UserModelShortSerializer(many=True)
     userDownVotes = UserModelShortSerializer(many=True)
-    comments = CommentModelSerializer(source="comment_set", many=True)
 
     class Meta:
         model = models.Post
@@ -67,7 +66,6 @@ class PostModelSerializer(serializers.ModelSerializer):
             "user_id",
             "cat_id",
             "tags",
-            "comments",
             "userUpVotes",
             "userDownVotes",
             "created_at",

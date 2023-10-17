@@ -5,6 +5,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.decorators import action
 
 from apps.post import models, serializers, mixins, permissions
 
@@ -51,6 +52,19 @@ class PostViewSet(viewsets.ModelViewSet):
                             upvotes=Count('userUpVotes'))
                 .order_by('-rating', '-upvotes'))
         return super().list(self, request, *args, **kwargs)
+
+    @action(detail=True, methods=['GET'], url_path='comments')
+    def comments(self, request, *args, **kwargs):
+        obj = self.get_object()
+        queryset = obj.comment_set.all()
+
+        page = self.paginate_queryset(queryset)
+        if page is not None:
+            serializer = serializers.CommentModelSerializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
 
 
 class CategoryViewSet(mixins.DenyDeletionOfDefaultCategoryMixin,
