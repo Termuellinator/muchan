@@ -11,7 +11,7 @@ from apps.post import models, serializers, mixins, permissions
 
 
 
-class StandardPostPagination(PageNumberPagination):
+class StandardPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = 'page_size'
     max_page_size = 100
@@ -22,7 +22,7 @@ class PostViewSet(viewsets.ModelViewSet):
     Query parameter 'sort' can be set to 'hot' to sort by upvotes
     """ 
     permission_classes = (permissions.AuthorSuperOrReadOnly,)
-    pagination_class = StandardPostPagination
+    pagination_class = StandardPagination
 
     queryset = (
         models.Post.objects
@@ -86,7 +86,10 @@ class TagViewSet(viewsets.ModelViewSet):
 
 class CommentViewSet(viewsets.ModelViewSet):
     permission_classes = (permissions.AuthorSuperOrReadOnly,)
-    queryset = (models.Comment.objects.all())
+    pagination_class = StandardPagination
+    
+    queryset = (models.Comment.objects.all()
+                .order_by('-created_at'))
 
     serializer_class = serializers.CommentModelSerializer
 
